@@ -4,15 +4,17 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
+import { CornerFlourish } from "@/components/Flourish";
+
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    setError(false);
 
     const res = await signIn("credentials", {
       email,
@@ -21,50 +23,60 @@ export default function LoginPage() {
     });
 
     if (res?.error) {
-      setError("Invalid credentials");
+      setError(true);
     } else {
-      router.push("/edit/new");
+      router.push("/edit");
       router.refresh();
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#fdfbf7] flex items-center justify-center p-4">
-      <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md border border-pink-100">
-        <h1 className="text-4xl font-handwritten text-pink-500 mb-6 text-center">Admin Login</h1>
+    <div className="min-h-screen bg-[var(--color-bg-paper)] flex items-center justify-center p-4">
+      <div className="relative bg-white p-10 rounded-2xl shadow-xl w-full max-w-md border-2 border-dashed border-[var(--color-secondary)]">
+        
+        {/* Corner Flourishes */}
+        <CornerFlourish className="absolute top-3 left-3 w-6 h-6 opacity-80" />
+        <CornerFlourish className="absolute top-3 right-3 w-6 h-6 opacity-80" />
+        <CornerFlourish className="absolute bottom-3 left-3 w-6 h-6 opacity-80" />
+        <CornerFlourish className="absolute bottom-3 right-3 w-6 h-6 opacity-80" />
+
+        <div className="text-center mb-8 mt-2">
+          <h1 className="text-4xl font-heading text-[var(--color-primary)] mb-2">Welcome Back</h1>
+          <p className="text-[var(--color-text-body)]">Log in to add a new recipe to the book</p>
+        </div>
         
         {error && (
-          <div className="bg-red-50 text-red-500 p-3 rounded-lg mb-4 text-sm">
-            {error}
+          <div className="text-center text-[var(--color-primary)] bg-[var(--color-secondary)]/20 p-3 rounded-lg mb-6 border border-dashed border-[var(--color-primary)]/30">
+            That email or password doesn't match.
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
+            <label className="block font-bold text-[var(--color-text-body)] mb-1">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400"
+              className="w-full px-4 py-3 border-2 border-dashed border-[var(--color-secondary)] rounded-xl bg-white focus:outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] transition-all"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Password</label>
+            <label className="block font-bold text-[var(--color-text-body)] mb-1">Password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400"
+              className="w-full px-4 py-3 border-2 border-dashed border-[var(--color-secondary)] rounded-xl bg-white focus:outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] transition-all"
             />
           </div>
           <button
             type="submit"
-            className="w-full bg-pink-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-pink-600 transition-colors"
+            className="w-full bg-[var(--color-primary)] text-white font-bold text-lg py-3 px-4 rounded-full hover:opacity-90 transition-opacity focus:outline-none focus:ring-4 focus:ring-[var(--color-secondary)]"
           >
-            Sign In
+            Log In
           </button>
         </form>
       </div>

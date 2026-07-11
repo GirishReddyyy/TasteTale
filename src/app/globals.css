@@ -1,24 +1,22 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-inter);
-  --font-mono: var(--font-geist-mono);
-  --font-handwritten: var(--font-caveat);
+  --font-sans: var(--font-nunito);
+  --font-heading: var(--font-fredoka);
+  --font-handwritten: var(--font-fredoka); /* Kept for backwards compatibility with older components if they still use it, but maps to Fredoka now */
 
-  --color-pastel-pink: #fbcfe8;
-  --color-pastel-blue: #bfdbfe;
-  --color-pastel-green: #bbf7d0;
-  --color-pastel-yellow: #fef08a;
+  --color-primary: #D94F5C;
+  --color-secondary: #F4B8C1;
+  --color-supporting: #8FA888;
   
-  --color-text-dark: #334155;
-  --color-text-light: #94a3b8;
+  --color-text-body: #6B4C3B;
   
-  --color-bg-paper: #fdfbf7;
+  --color-bg-paper: #FDF6F0;
 }
 
 :root {
   --background: var(--color-bg-paper);
-  --foreground: var(--color-text-dark);
+  --foreground: var(--color-text-body);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -32,11 +30,10 @@ body {
   background-color: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
-  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23dcd9d1' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 }
 
-h1, h2, h3, h4, h5, h6, .font-handwritten {
-  font-family: var(--font-handwritten);
+h1, h2, h3, h4, h5, h6, .font-heading, .font-handwritten {
+  font-family: var(--font-heading);
 }
 
 /* Tiptap Editor Styles */

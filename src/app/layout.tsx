@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
-import { Inter, Caveat } from "next/font/google";
+import { Fredoka, Nunito } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
+const fredoka = Fredoka({
+  variable: "--font-fredoka",
   subsets: ["latin"],
 });
 
-const caveat = Caveat({
-  variable: "--font-caveat",
+const nunito = Nunito({
+  variable: "--font-nunito",
   subsets: ["latin"],
 });
 
@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${caveat.variable} antialiased`}
+        className={`${fredoka.variable} ${nunito.variable} antialiased font-sans bg-[var(--color-bg-paper)] text-[var(--color-text-body)]`}
       >
         {children}
       </body>
