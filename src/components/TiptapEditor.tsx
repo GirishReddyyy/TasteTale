@@ -2,10 +2,8 @@
 
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import TextStyle from "@tiptap/extension-text-style";
-import Color from "@tiptap/extension-color";
+import { TextStyleKit } from "@tiptap/extension-text-style";
 import TextAlign from "@tiptap/extension-text-align";
-import FontFamily from "@tiptap/extension-font-family";
 import { Bold, Italic, AlignLeft, AlignCenter, AlignRight, AlignJustify } from "lucide-react";
 
 type TiptapEditorProps = {
@@ -18,9 +16,10 @@ export default function TiptapEditor({ content, onChange, placeholder }: TiptapE
   const editor = useEditor({
     extensions: [
       StarterKit,
-      TextStyle,
-      Color,
-      FontFamily,
+      TextStyleKit.configure({
+        color: { types: ['textStyle'] },
+        fontFamily: { types: ['textStyle'] },
+      }),
       TextAlign.configure({
         types: ["heading", "paragraph"],
       }),
