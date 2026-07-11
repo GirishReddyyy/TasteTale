@@ -30,7 +30,7 @@ export default function TiptapEditor({ content, onChange, placeholder }: TiptapE
     },
     editorProps: {
       attributes: {
-        class: "prose max-w-none focus:outline-none min-h-[150px] p-4 bg-white/50 border border-slate-200 rounded-b-lg",
+        class: "prose prose-pink max-w-none focus:outline-none min-h-[150px] p-4 bg-white border-t-2 border-dashed border-[var(--color-secondary)]/50 rounded-b-xl",
       },
     },
   });
@@ -40,53 +40,53 @@ export default function TiptapEditor({ content, onChange, placeholder }: TiptapE
   }
 
   return (
-    <div className="border border-slate-200 rounded-lg overflow-hidden bg-white">
-      <div className="flex flex-wrap items-center gap-1 p-2 bg-slate-50 border-b border-slate-200">
+    <div className="border-2 border-dashed border-[var(--color-secondary)] rounded-xl overflow-hidden bg-white shadow-sm focus-within:border-[var(--color-primary)] transition-colors">
+      <div className="flex flex-wrap items-center gap-1 p-3 bg-[var(--color-bg-paper)]">
         {/* Formatting */}
         <button
           onClick={(e) => { e.preventDefault(); editor.chain().focus().toggleBold().run(); }}
-          className={`p-1.5 rounded ${editor.isActive("bold") ? "bg-slate-200" : "hover:bg-slate-200"}`}
+          className={`p-2 rounded-lg transition-colors ${editor.isActive("bold") ? "bg-[var(--color-primary)] text-white" : "text-[var(--color-text-body)] hover:bg-[var(--color-secondary)]/30"}`}
           title="Bold"
         >
           <Bold className="w-4 h-4" />
         </button>
         <button
           onClick={(e) => { e.preventDefault(); editor.chain().focus().toggleItalic().run(); }}
-          className={`p-1.5 rounded ${editor.isActive("italic") ? "bg-slate-200" : "hover:bg-slate-200"}`}
+          className={`p-2 rounded-lg transition-colors ${editor.isActive("italic") ? "bg-[var(--color-primary)] text-white" : "text-[var(--color-text-body)] hover:bg-[var(--color-secondary)]/30"}`}
           title="Italic"
         >
           <Italic className="w-4 h-4" />
         </button>
 
-        <div className="w-px h-4 bg-slate-300 mx-1" />
+        <div className="w-px h-6 bg-[var(--color-secondary)] mx-1" />
 
         {/* Alignment */}
         <button
           onClick={(e) => { e.preventDefault(); editor.chain().focus().setTextAlign("left").run(); }}
-          className={`p-1.5 rounded ${editor.isActive({ textAlign: "left" }) ? "bg-slate-200" : "hover:bg-slate-200"}`}
+          className={`p-2 rounded-lg transition-colors ${editor.isActive({ textAlign: "left" }) ? "bg-[var(--color-primary)] text-white" : "text-[var(--color-text-body)] hover:bg-[var(--color-secondary)]/30"}`}
         >
           <AlignLeft className="w-4 h-4" />
         </button>
         <button
           onClick={(e) => { e.preventDefault(); editor.chain().focus().setTextAlign("center").run(); }}
-          className={`p-1.5 rounded ${editor.isActive({ textAlign: "center" }) ? "bg-slate-200" : "hover:bg-slate-200"}`}
+          className={`p-2 rounded-lg transition-colors ${editor.isActive({ textAlign: "center" }) ? "bg-[var(--color-primary)] text-white" : "text-[var(--color-text-body)] hover:bg-[var(--color-secondary)]/30"}`}
         >
           <AlignCenter className="w-4 h-4" />
         </button>
         <button
           onClick={(e) => { e.preventDefault(); editor.chain().focus().setTextAlign("right").run(); }}
-          className={`p-1.5 rounded ${editor.isActive({ textAlign: "right" }) ? "bg-slate-200" : "hover:bg-slate-200"}`}
+          className={`p-2 rounded-lg transition-colors ${editor.isActive({ textAlign: "right" }) ? "bg-[var(--color-primary)] text-white" : "text-[var(--color-text-body)] hover:bg-[var(--color-secondary)]/30"}`}
         >
           <AlignRight className="w-4 h-4" />
         </button>
         <button
           onClick={(e) => { e.preventDefault(); editor.chain().focus().setTextAlign("justify").run(); }}
-          className={`p-1.5 rounded ${editor.isActive({ textAlign: "justify" }) ? "bg-slate-200" : "hover:bg-slate-200"}`}
+          className={`p-2 rounded-lg transition-colors ${editor.isActive({ textAlign: "justify" }) ? "bg-[var(--color-primary)] text-white" : "text-[var(--color-text-body)] hover:bg-[var(--color-secondary)]/30"}`}
         >
           <AlignJustify className="w-4 h-4" />
         </button>
 
-        <div className="w-px h-4 bg-slate-300 mx-1" />
+        <div className="w-px h-6 bg-[var(--color-secondary)] mx-1" />
 
         {/* Fonts */}
         <select
@@ -97,11 +97,11 @@ export default function TiptapEditor({ content, onChange, placeholder }: TiptapE
               editor.chain().focus().unsetFontFamily().run();
             }
           }}
-          className="text-sm border border-slate-200 rounded px-2 py-1 bg-white"
+          className="text-sm font-bold text-[var(--color-text-body)] border-2 border-dashed border-[var(--color-secondary)] rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:border-[var(--color-primary)]"
         >
           <option value="">Default Font</option>
-          <option value="var(--font-inter)">Inter</option>
-          <option value="var(--font-caveat)">Caveat</option>
+          <option value="var(--font-nunito)">Nunito</option>
+          <option value="var(--font-fredoka)">Fredoka</option>
         </select>
 
         {/* Color */}
@@ -110,8 +110,8 @@ export default function TiptapEditor({ content, onChange, placeholder }: TiptapE
           onInput={(event) => {
             editor.chain().focus().setColor((event.target as HTMLInputElement).value).run();
           }}
-          value={editor.getAttributes('textStyle').color || '#000000'}
-          className="w-8 h-8 p-0 border-0 rounded cursor-pointer"
+          value={editor.getAttributes('textStyle').color || '#6B4C3B'}
+          className="w-9 h-9 p-0 border-0 rounded cursor-pointer bg-transparent"
         />
       </div>
       
