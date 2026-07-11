@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { CornerFlourish } from "@/components/Flourish";
-import { Edit, Trash2, Plus, LogOut, Search, Eye } from "lucide-react";
+import { Edit, Trash2, Plus, LogOut, Search, Eye, Home } from "lucide-react";
 
 type Recipe = {
   _id: string;
@@ -94,6 +94,12 @@ export default function AdminDashboard() {
           </div>
           
           <div className="flex items-center gap-4">
+            <Link
+              href="/"
+              className="flex items-center gap-2 px-6 py-3 rounded-full font-bold text-[var(--color-text-body)] border-2 border-dashed border-[var(--color-secondary)] hover:bg-[var(--color-secondary)]/10 transition-colors hidden sm:flex"
+            >
+              <Home className="w-5 h-5" /> Go to Home
+            </Link>
             <Link
               href="/edit/new"
               className="flex items-center gap-2 bg-[var(--color-primary)] text-white px-6 py-3 rounded-full font-bold hover:opacity-90 transition-opacity shadow-sm"
