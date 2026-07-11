@@ -1,11 +1,52 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { IRecipe } from "@/models/Recipe";
-import { Clock } from "lucide-react";
+import { Clock, ArrowLeft, ArrowRight, ArrowUp, ArrowDown } from "lucide-react";
 
-export default function RecipeBook({ recipe }: { recipe: any }) {
+export default function RecipeBook({ recipe, nextSlug, prevSlug }: { recipe: any; nextSlug?: string; prevSlug?: string }) {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+
+  // Prefetch adjacent recipes on mount
+  useEffect(() => {
+    if (nextSlug) router.prefetch(`/recipe/${nextSlug}`);
+    if (prevSlug) router.prefetch(`/recipe/${prevSlug}`);
+  }, [nextSlug, prevSlug, router]);
+
+  const handleNavigate = useCallback((slug?: string) => {
+    if (!slug) return;
+    
+    // On mobile, just navigate immediately. On desktop, close book then navigate.
+    const isMobile = window.innerWidth < 768;
+    
+    if (isMobile) {
+      router.push(`/recipe/${slug}`);
+    } else {
+      setIsOpen(false);
+      setTimeout(() => {
+        router.push(`/recipe/${slug}`);
+      }, 1000); // Wait for close animation
+    }
+  }, [router]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't trigger if user is typing in an input (though there shouldn't be any here)
+      if (document.activeElement?.tagName === 'INPUT' || document.activeElement?.tagName === 'TEXTAREA') return;
+
+      if (e.key === 'ArrowRight' && nextSlug) {
+        handleNavigate(nextSlug);
+      } else if (e.key === 'ArrowLeft' && prevSlug) {
+        handleNavigate(prevSlug);
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [nextSlug, prevSlug, handleNavigate]);
 
   useEffect(() => {
     // Open the book shortly after mounting for the effect
@@ -29,6 +70,20 @@ export default function RecipeBook({ recipe }: { recipe: any }) {
         style={{ backgroundImage: `url(${recipe.backgroundImageUrl})` }}
       >
         <div className="absolute inset-0 bg-white/40 backdrop-blur-[2px]" />
+        
+        {/* Mobile Prev Button */}
+        {prevSlug && (
+           <div className="relative z-20 flex justify-center pt-6">
+             <button
+               onClick={() => handleNavigate(prevSlug)}
+               className="p-3 bg-[var(--color-primary)] text-white rounded-full border-2 border-dashed border-white/50 shadow-lg hover:bg-white hover:text-[var(--color-primary)] transition-all"
+               aria-label="Previous Recipe"
+             >
+               <ArrowUp className="w-5 h-5" />
+             </button>
+           </div>
+        )}
+
         <div className="relative z-10 p-6 flex flex-col gap-8" style={{ color: theme.bodyColor }}>
           <h1
             className="text-5xl text-center mt-8 drop-shadow-sm"
@@ -73,10 +128,45 @@ export default function RecipeBook({ recipe }: { recipe: any }) {
             </div>
           </div>
         </div>
+
+        {/* Mobile Next Button */}
+        {nextSlug && (
+           <div className="relative z-20 flex justify-center pb-8 pt-2">
+             <button
+               onClick={() => handleNavigate(nextSlug)}
+               className="p-3 bg-[var(--color-primary)] text-white rounded-full border-2 border-dashed border-white/50 shadow-lg hover:bg-white hover:text-[var(--color-primary)] transition-all"
+               aria-label="Next Recipe"
+             >
+               <ArrowDown className="w-5 h-5" />
+             </button>
+           </div>
+        )}
       </div>
 
       {/* Desktop view (3D flip) */}
       <div className="hidden md:block w-full h-full relative">
+        {/* Desktop Navigation Buttons */}
+        {prevSlug && (
+          <button
+            onClick={() => handleNavigate(prevSlug)}
+            onMouseEnter={() => router.prefetch(`/recipe/${prevSlug}`)}
+            className="fixed left-4 md:left-8 top-1/2 -translate-y-1/2 z-50 p-4 bg-[var(--color-primary)] text-white rounded-full border-2 border-dashed border-white/50 shadow-lg hover:scale-110 hover:bg-white hover:text-[var(--color-primary)] hover:border-[var(--color-primary)] transition-all"
+            aria-label="Previous Recipe"
+          >
+            <ArrowLeft className="w-6 h-6" />
+          </button>
+        )}
+        {nextSlug && (
+          <button
+            onClick={() => handleNavigate(nextSlug)}
+            onMouseEnter={() => router.prefetch(`/recipe/${nextSlug}`)}
+            className="fixed right-4 md:right-8 top-1/2 -translate-y-1/2 z-50 p-4 bg-[var(--color-primary)] text-white rounded-full border-2 border-dashed border-white/50 shadow-lg hover:scale-110 hover:bg-white hover:text-[var(--color-primary)] hover:border-[var(--color-primary)] transition-all"
+            aria-label="Next Recipe"
+          >
+            <ArrowRight className="w-6 h-6" />
+          </button>
+        )}
+
         {/* The open book background/content */}
         <div className="absolute inset-0 flex shadow-2xl rounded-2xl overflow-hidden bg-cover bg-center" style={{ backgroundImage: `url(${recipe.backgroundImageUrl})` }}>
           <div className="absolute inset-0 bg-white/30 backdrop-blur-[2px] z-0" />

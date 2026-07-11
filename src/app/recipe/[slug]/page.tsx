@@ -21,6 +21,19 @@ export default async function RecipePage({
     notFound();
   }
 
+  // Find next and previous recipes (ordered by createdAt descending)
+  // "Next" means older recipe (smaller createdAt)
+  const nextRecipe = await Recipe.findOne({ createdAt: { $lt: recipe.createdAt } })
+    .sort({ createdAt: -1 })
+    .select("slug")
+    .lean();
+
+  // "Previous" means newer recipe (larger createdAt)
+  const prevRecipe = await Recipe.findOne({ createdAt: { $gt: recipe.createdAt } })
+    .sort({ createdAt: 1 })
+    .select("slug")
+    .lean();
+
   const serializedRecipe = {
     ...recipe,
     _id: recipe._id.toString(),
@@ -37,8 +50,11 @@ export default async function RecipePage({
       >
         <ArrowLeft className="w-4 h-4" /> Back to Recipes
       </Link>
-      
-      <RecipeBook recipe={serializedRecipe as any} />
+      <RecipeBook 
+        recipe={serializedRecipe as any} 
+        nextSlug={nextRecipe?.slug} 
+        prevSlug={prevRecipe?.slug} 
+      />
     </main>
   );
 }
