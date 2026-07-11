@@ -255,7 +255,7 @@ export default function RecipeEditor({ initialData, isEdit }: RecipeEditorProps)
                     type="text"
                     value={recipe.title}
                     onChange={(e) => setRecipe({ ...recipe, title: e.target.value })}
-                    className="w-full px-4 py-3 text-3xl font-heading border-2 border-dashed border-[var(--color-secondary)] rounded-xl focus:outline-none focus:border-[var(--color-primary)]"
+                    className="w-full px-4 py-3 text-3xl font-heading border-2 border-dashed border-[var(--color-secondary)] rounded-xl focus:outline-none focus:border-[var(--color-primary)] text-[var(--color-text-body)] placeholder:text-[var(--color-text-body)]/40 bg-white"
                     placeholder="e.g. Grandma's Apple Pie"
                   />
                 </div>
@@ -265,7 +265,7 @@ export default function RecipeEditor({ initialData, isEdit }: RecipeEditorProps)
                     type="text"
                     value={recipe.slug}
                     onChange={(e) => setRecipe({ ...recipe, slug: e.target.value })}
-                    className="w-full px-4 py-2 font-mono text-sm border-2 border-dashed border-[var(--color-secondary)] rounded-lg focus:outline-none focus:border-[var(--color-primary)]"
+                    className="w-full px-4 py-2 font-mono text-sm border-2 border-dashed border-[var(--color-secondary)] rounded-lg focus:outline-none focus:border-[var(--color-primary)] text-[var(--color-text-body)] placeholder:text-[var(--color-text-body)]/40 bg-white"
                     placeholder="e.g. grandmas-apple-pie"
                   />
                 </div>
@@ -279,6 +279,7 @@ export default function RecipeEditor({ initialData, isEdit }: RecipeEditorProps)
                 <TiptapEditor
                   content={recipe.ingredientsHtml}
                   onChange={(html) => setRecipe({ ...recipe, ingredientsHtml: html })}
+                  placeholder="e.g. 2 cups of flour..."
                 />
               </div>
 
@@ -290,6 +291,7 @@ export default function RecipeEditor({ initialData, isEdit }: RecipeEditorProps)
                 <TiptapEditor
                   content={recipe.stepsHtml}
                   onChange={(html) => setRecipe({ ...recipe, stepsHtml: html })}
+                  placeholder="e.g. Preheat the oven to 350°F..."
                 />
               </div>
             </div>
@@ -338,7 +340,7 @@ export default function RecipeEditor({ initialData, isEdit }: RecipeEditorProps)
                   type="text"
                   value={recipe.backgroundImageUrl}
                   onChange={(e) => setRecipe({ ...recipe, backgroundImageUrl: e.target.value })}
-                  className="w-full mt-2 px-3 py-2 text-sm border-2 border-dashed border-[var(--color-secondary)] rounded-lg focus:outline-none focus:border-[var(--color-primary)]"
+                  className="w-full mt-2 px-3 py-2 text-sm border-2 border-dashed border-[var(--color-secondary)] rounded-lg focus:outline-none focus:border-[var(--color-primary)] text-[var(--color-text-body)] placeholder:text-[var(--color-text-body)]/40 bg-white"
                   placeholder="Or paste an image URL directly"
                 />
               </div>
@@ -354,7 +356,7 @@ export default function RecipeEditor({ initialData, isEdit }: RecipeEditorProps)
                     type="text"
                     value={recipe.tags}
                     onChange={(e) => setRecipe({ ...recipe, tags: e.target.value })}
-                    className="w-full px-4 py-2 border-2 border-dashed border-[var(--color-secondary)] rounded-lg focus:outline-none focus:border-[var(--color-primary)]"
+                    className="w-full px-4 py-2 border-2 border-dashed border-[var(--color-secondary)] rounded-lg focus:outline-none focus:border-[var(--color-primary)] text-[var(--color-text-body)] placeholder:text-[var(--color-text-body)]/40 bg-white"
                     placeholder="Dessert, Baking, Cozy"
                   />
                 </div>
@@ -376,14 +378,14 @@ export default function RecipeEditor({ initialData, isEdit }: RecipeEditorProps)
                         type="text"
                         value={recipe.cookTimeVariants.stove.time}
                         onChange={(e) => setRecipe({ ...recipe, cookTimeVariants: { ...recipe.cookTimeVariants, stove: { ...recipe.cookTimeVariants.stove, time: e.target.value } } })}
-                        className="w-1/3 px-3 py-2 border-2 border-dashed border-[var(--color-secondary)] rounded-lg text-sm focus:outline-none focus:border-[var(--color-primary)]"
+                        className="w-1/3 px-3 py-2 border-2 border-dashed border-[var(--color-secondary)] rounded-lg text-sm focus:outline-none focus:border-[var(--color-primary)] text-[var(--color-text-body)] placeholder:text-[var(--color-text-body)]/40 bg-white"
                         placeholder="Time (20m)"
                       />
                       <input
                         type="text"
                         value={recipe.cookTimeVariants.stove.notes}
                         onChange={(e) => setRecipe({ ...recipe, cookTimeVariants: { ...recipe.cookTimeVariants, stove: { ...recipe.cookTimeVariants.stove, notes: e.target.value } } })}
-                        className="w-2/3 px-3 py-2 border-2 border-dashed border-[var(--color-secondary)] rounded-lg text-sm focus:outline-none focus:border-[var(--color-primary)]"
+                        className="w-2/3 px-3 py-2 border-2 border-dashed border-[var(--color-secondary)] rounded-lg text-sm focus:outline-none focus:border-[var(--color-primary)] text-[var(--color-text-body)] placeholder:text-[var(--color-text-body)]/40 bg-white"
                         placeholder="Notes (Medium heat)"
                       />
                     </div>
@@ -398,14 +400,14 @@ export default function RecipeEditor({ initialData, isEdit }: RecipeEditorProps)
                         type="text"
                         value={recipe.cookTimeVariants.oven.time}
                         onChange={(e) => setRecipe({ ...recipe, cookTimeVariants: { ...recipe.cookTimeVariants, oven: { ...recipe.cookTimeVariants.oven, time: e.target.value } } })}
-                        className="w-1/3 px-3 py-2 border-2 border-dashed border-[var(--color-secondary)] rounded-lg text-sm focus:outline-none focus:border-[var(--color-primary)]"
+                        className="w-1/3 px-3 py-2 border-2 border-dashed border-[var(--color-secondary)] rounded-lg text-sm focus:outline-none focus:border-[var(--color-primary)] text-[var(--color-text-body)] placeholder:text-[var(--color-text-body)]/40 bg-white"
                         placeholder="Time (45m)"
                       />
                       <input
                         type="text"
                         value={recipe.cookTimeVariants.oven.notes}
                         onChange={(e) => setRecipe({ ...recipe, cookTimeVariants: { ...recipe.cookTimeVariants, oven: { ...recipe.cookTimeVariants.oven, notes: e.target.value } } })}
-                        className="w-2/3 px-3 py-2 border-2 border-dashed border-[var(--color-secondary)] rounded-lg text-sm focus:outline-none focus:border-[var(--color-primary)]"
+                        className="w-2/3 px-3 py-2 border-2 border-dashed border-[var(--color-secondary)] rounded-lg text-sm focus:outline-none focus:border-[var(--color-primary)] text-[var(--color-text-body)] placeholder:text-[var(--color-text-body)]/40 bg-white"
                         placeholder="Notes (350°F / 175°C)"
                       />
                     </div>
@@ -420,14 +422,14 @@ export default function RecipeEditor({ initialData, isEdit }: RecipeEditorProps)
                         type="text"
                         value={recipe.cookTimeVariants.airfryer.time}
                         onChange={(e) => setRecipe({ ...recipe, cookTimeVariants: { ...recipe.cookTimeVariants, airfryer: { ...recipe.cookTimeVariants.airfryer, time: e.target.value } } })}
-                        className="w-1/3 px-3 py-2 border-2 border-dashed border-[var(--color-secondary)] rounded-lg text-sm focus:outline-none focus:border-[var(--color-primary)]"
+                        className="w-1/3 px-3 py-2 border-2 border-dashed border-[var(--color-secondary)] rounded-lg text-sm focus:outline-none focus:border-[var(--color-primary)] text-[var(--color-text-body)] placeholder:text-[var(--color-text-body)]/40 bg-white"
                         placeholder="Time (15m)"
                       />
                       <input
                         type="text"
                         value={recipe.cookTimeVariants.airfryer.notes}
                         onChange={(e) => setRecipe({ ...recipe, cookTimeVariants: { ...recipe.cookTimeVariants, airfryer: { ...recipe.cookTimeVariants.airfryer, notes: e.target.value } } })}
-                        className="w-2/3 px-3 py-2 border-2 border-dashed border-[var(--color-secondary)] rounded-lg text-sm focus:outline-none focus:border-[var(--color-primary)]"
+                        className="w-2/3 px-3 py-2 border-2 border-dashed border-[var(--color-secondary)] rounded-lg text-sm focus:outline-none focus:border-[var(--color-primary)] text-[var(--color-text-body)] placeholder:text-[var(--color-text-body)]/40 bg-white"
                         placeholder="Notes (400°F, shake half)"
                       />
                     </div>

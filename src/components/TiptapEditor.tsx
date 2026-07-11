@@ -4,6 +4,7 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { TextStyleKit } from "@tiptap/extension-text-style";
 import TextAlign from "@tiptap/extension-text-align";
+import Placeholder from "@tiptap/extension-placeholder";
 import { Bold, Italic, AlignLeft, AlignCenter, AlignRight, AlignJustify } from "lucide-react";
 
 type TiptapEditorProps = {
@@ -23,6 +24,10 @@ export default function TiptapEditor({ content, onChange, placeholder }: TiptapE
       TextAlign.configure({
         types: ["heading", "paragraph"],
       }),
+      Placeholder.configure({
+        placeholder: placeholder || 'Write something...',
+        emptyEditorClass: 'is-editor-empty',
+      }),
     ],
     content,
     onUpdate: ({ editor }) => {
@@ -30,7 +35,7 @@ export default function TiptapEditor({ content, onChange, placeholder }: TiptapE
     },
     editorProps: {
       attributes: {
-        class: "prose prose-pink max-w-none focus:outline-none min-h-[150px] p-4 bg-white border-t-2 border-dashed border-[var(--color-secondary)]/50 rounded-b-xl",
+        class: "prose prose-pink max-w-none focus:outline-none min-h-[150px] p-4 bg-white border-t-2 border-dashed border-[var(--color-secondary)]/50 rounded-b-xl text-[var(--color-text-body)]",
       },
     },
   });

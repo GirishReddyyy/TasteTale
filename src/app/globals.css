@@ -44,3 +44,13 @@ h1, h2, h3, h4, h5, h6, .font-heading, .font-handwritten {
 .ProseMirror p {
   margin-bottom: 0.5em;
 }
+
+/* Tiptap Placeholder Extension */
+.ProseMirror p.is-editor-empty:first-child::before {
+  color: var(--color-text-body);
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+  opacity: 0.4;
+}
