@@ -18,3 +18,34 @@ export function CornerFlourish({ className }: { className?: string }) {
     </svg>
   );
 }
+
+export function CherryFlourish({ className }: { className?: string }) {
+  return (
+    <svg 
+      className={className} 
+      viewBox="0 0 24 24" 
+      fill="none" 
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      {/* Stem and leaf */}
+      <path 
+        d="M13 8c-1-3 1-6 4-7-1 1-1.5 2.5-1 4 3 0 5-1 5-1s-1 3-3.5 3c-1.5 0-3 1-4 4" 
+        stroke="var(--color-supporting)" 
+        strokeWidth="1.5" 
+        strokeLinecap="round" 
+        strokeLinejoin="round" 
+      />
+      {/* Left Cherry */}
+      <circle cx="8" cy="16" r="4.5" fill="var(--color-primary)" />
+      {/* Right Cherry */}
+      <circle cx="16" cy="18" r="4.5" fill="var(--color-primary)" />
+      {/* Stems connecting to cherries */}
+      <path 
+        d="M13 8c-3 2-5 3.5-5 8M13 8c2 3 3 5 3 10" 
+        stroke="var(--color-supporting)" 
+        strokeWidth="1.5" 
+        strokeLinecap="round" 
+      />
+    </svg>
+  );
+}

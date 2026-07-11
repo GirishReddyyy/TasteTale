@@ -19,12 +19,6 @@
   --foreground: var(--color-text-body);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #1e1e2f;
-    --foreground: #e2e8f0;
-  }
-}
 
 body {
   background-color: var(--background);

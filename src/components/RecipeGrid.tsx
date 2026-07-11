@@ -53,11 +53,12 @@ export default function RecipeGrid({
                   className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
                   style={{ backgroundImage: `url(${recipe.backgroundImageUrl})` }}
                 />
-                {/* Vintage overlay effect */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+                {/* Strong gradient scrim for text legibility */}
+                <div className="absolute inset-x-0 bottom-0 h-[80%] bg-gradient-to-t from-black/95 via-black/50 to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-black/10 pointer-events-none" />
                 
                 <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <h3 className="font-handwritten text-4xl text-white mb-2 leading-tight drop-shadow-md">
+                  <h3 className="font-heading text-4xl text-white mb-2 leading-tight drop-shadow-lg line-clamp-3">
                     {recipe.title}
                   </h3>
                   <div className="flex flex-wrap gap-2">
