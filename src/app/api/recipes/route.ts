@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import dbConnect from "@/lib/mongodb";
 import Recipe from "@/models/Recipe";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export async function GET(request: Request) {
   try {
@@ -22,7 +23,7 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    const session = await getServerSession();
+    const session = await getServerSession(authOptions);
     if (!session || (session.user as any)?.role !== "admin") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
