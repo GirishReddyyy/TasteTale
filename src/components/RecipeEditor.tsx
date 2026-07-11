@@ -43,8 +43,20 @@ export default function RecipeEditor({ initialData, isEdit }: RecipeEditorProps)
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
+  const [slugEdited, setSlugEdited] = useState(isEdit ? true : false);
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
+
+  // Auto-generate slug from title if not manually edited
+  useEffect(() => {
+    if (!slugEdited && recipe.title && !isEdit) {
+      const autoSlug = recipe.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)+/g, '');
+      setRecipe((prev) => ({ ...prev, slug: autoSlug }));
+    }
+  }, [recipe.title, slugEdited, isEdit]);
 
   // Mark as dirty on any recipe change
   useEffect(() => {
@@ -82,6 +94,7 @@ export default function RecipeEditor({ initialData, isEdit }: RecipeEditorProps)
   const validate = () => {
     const newErrors = [];
     if (!recipe.title.trim()) newErrors.push("Title is required.");
+    if (!recipe.slug.trim()) newErrors.push("URL Slug is required.");
     if (!recipe.ingredientsHtml || recipe.ingredientsHtml === "<p></p>") newErrors.push("At least one ingredient is required.");
     if (!recipe.stepsHtml || recipe.stepsHtml === "<p></p>") newErrors.push("At least one method step is required.");
     setErrors(newErrors);
@@ -264,7 +277,10 @@ export default function RecipeEditor({ initialData, isEdit }: RecipeEditorProps)
                   <input
                     type="text"
                     value={recipe.slug}
-                    onChange={(e) => setRecipe({ ...recipe, slug: e.target.value })}
+                    onChange={(e) => {
+                      setSlugEdited(true);
+                      setRecipe({ ...recipe, slug: e.target.value });
+                    }}
                     className="w-full px-4 py-2 font-mono text-sm border-2 border-dashed border-[var(--color-secondary)] rounded-lg focus:outline-none focus:border-[var(--color-primary)] text-[var(--color-text-body)] placeholder:text-[var(--color-text-body)]/40 bg-white"
                     placeholder="e.g. grandmas-apple-pie"
                   />

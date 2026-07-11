@@ -37,17 +37,17 @@ export default function RecipeBook({ recipe }: { recipe: any }) {
             {recipe.title}
           </h1>
 
-          <div className="bg-white/70 p-6 rounded-2xl shadow-sm border border-white/40">
+          <div className="bg-white/95 p-6 rounded-2xl shadow-sm border border-white/40">
             <h2 className="text-2xl mb-4 font-bold">Ingredients</h2>
             <div className="prose prose-pink max-w-none" dangerouslySetInnerHTML={{ __html: recipe.ingredientsHtml }} />
           </div>
 
-          <div className="bg-white/70 p-6 rounded-2xl shadow-sm border border-white/40">
+          <div className="bg-white/95 p-6 rounded-2xl shadow-sm border border-white/40">
             <h2 className="text-2xl mb-4 font-bold">Method</h2>
             <div className="prose prose-pink max-w-none" dangerouslySetInnerHTML={{ __html: recipe.stepsHtml }} />
           </div>
 
-          <div className="bg-white/70 p-6 rounded-2xl shadow-sm border border-white/40 mb-8">
+          <div className="bg-white/95 p-6 rounded-2xl shadow-sm border border-white/40 mb-8">
             <h2 className="text-2xl mb-4 font-bold flex items-center gap-2">
               <Clock className="w-6 h-6" /> Cook Times
             </h2>
@@ -89,16 +89,16 @@ export default function RecipeBook({ recipe }: { recipe: any }) {
             >
               {recipe.title}
             </h1>
-            <h2 className="text-3xl mb-6 font-bold bg-white/60 inline-block px-4 py-2 rounded-xl w-fit">Ingredients</h2>
-            <div className="bg-white/60 p-6 rounded-2xl shadow-sm prose prose-lg prose-pink max-w-none" dangerouslySetInnerHTML={{ __html: recipe.ingredientsHtml }} />
+            <h2 className="text-3xl mb-6 font-bold bg-white/95 inline-block px-4 py-2 rounded-xl w-fit">Ingredients</h2>
+            <div className="bg-white/95 p-6 rounded-2xl shadow-sm prose prose-lg prose-pink max-w-none" dangerouslySetInnerHTML={{ __html: recipe.ingredientsHtml }} />
           </div>
 
           {/* Right Page (Method & Notes) */}
           <div className="w-1/2 h-full z-10 p-12 overflow-y-auto" style={{ color: theme.bodyColor }}>
-            <h2 className="text-3xl mb-6 font-bold bg-white/60 inline-block px-4 py-2 rounded-xl w-fit">Method</h2>
-            <div className="bg-white/60 p-6 rounded-2xl shadow-sm mb-8 prose prose-lg prose-pink max-w-none" dangerouslySetInnerHTML={{ __html: recipe.stepsHtml }} />
+            <h2 className="text-3xl mb-6 font-bold bg-white/95 inline-block px-4 py-2 rounded-xl w-fit">Method</h2>
+            <div className="bg-white/95 p-6 rounded-2xl shadow-sm mb-8 prose prose-lg prose-pink max-w-none" dangerouslySetInnerHTML={{ __html: recipe.stepsHtml }} />
 
-            <h2 className="text-3xl mb-6 font-bold bg-white/60 inline-block px-4 py-2 rounded-xl w-fit flex items-center gap-3">
+            <h2 className="text-3xl mb-6 font-bold bg-white/95 inline-block px-4 py-2 rounded-xl w-fit flex items-center gap-3">
               <Clock className="w-8 h-8" style={{ color: theme.accentColor }} /> Cook Times
             </h2>
             <div className="grid grid-cols-2 gap-4">
@@ -129,11 +129,10 @@ export default function RecipeBook({ recipe }: { recipe: any }) {
 
         {/* The Cover (flips open to the left) */}
         <div
-          className={`absolute right-0 w-1/2 h-full origin-left transition-all duration-[1500ms] ease-[cubic-bezier(0.645,0.045,0.355,1)] z-50`}
+          className={`absolute right-0 w-1/2 h-full origin-left transition-all duration-[1000ms] ease-[cubic-bezier(0.645,0.045,0.355,1)] z-50 ${isOpen ? "opacity-0 pointer-events-none" : "opacity-100"}`}
           style={{
             transformStyle: "preserve-3d",
             transform: isOpen ? "rotateY(-180deg)" : "rotateY(0deg)",
-            pointerEvents: isOpen ? "none" : "auto", // allow clicking through when open
           }}
           onClick={() => !isOpen && setIsOpen(true)}
         >
