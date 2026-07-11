@@ -2,7 +2,7 @@ import dbConnect from "@/lib/mongodb";
 import Recipe from "@/models/Recipe";
 import RecipeGrid from "@/components/RecipeGrid";
 
-export const revalidate = 60; // Revalidate every minute
+export const dynamic = 'force-dynamic';
 
 export default async function Home() {
   await dbConnect();
