@@ -38,6 +38,9 @@ export async function POST(request: Request) {
 
     return NextResponse.json(recipe, { status: 201 });
   } catch (error: any) {
+    if (error.name === 'ValidationError') {
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
     // Check for duplicate slug error (code 11000 in MongoDB)
     if (error.code === 11000) {
       return NextResponse.json({ error: "A recipe with this slug already exists." }, { status: 400 });

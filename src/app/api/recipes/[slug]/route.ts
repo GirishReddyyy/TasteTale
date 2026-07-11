@@ -50,6 +50,9 @@ export async function PUT(
 
     return NextResponse.json(recipe);
   } catch (error: any) {
+    if (error.name === 'ValidationError') {
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
     if (error.code === 11000) {
       return NextResponse.json({ error: "A recipe with this slug already exists." }, { status: 400 });
     }

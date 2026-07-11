@@ -95,6 +95,7 @@ export default function RecipeEditor({ initialData, isEdit }: RecipeEditorProps)
     const newErrors = [];
     if (!recipe.title.trim()) newErrors.push("Title is required.");
     if (!recipe.slug.trim()) newErrors.push("URL Slug is required.");
+    if (!recipe.backgroundImageUrl.trim()) newErrors.push("An illustration/background image is required.");
     if (!recipe.ingredientsHtml || recipe.ingredientsHtml === "<p></p>") newErrors.push("At least one ingredient is required.");
     if (!recipe.stepsHtml || recipe.stepsHtml === "<p></p>") newErrors.push("At least one method step is required.");
     setErrors(newErrors);
