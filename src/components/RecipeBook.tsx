@@ -18,7 +18,19 @@ export default function RecipeBook({ recipe, nextSlug, prevSlug }: { recipe: any
 
   const handleNavigate = useCallback((slug?: string) => {
     if (!slug) return;
-    router.push(`/recipe/${slug}`);
+    
+    const isMobile = window.innerWidth < 768;
+    
+    if (isMobile) {
+      router.push(`/recipe/${slug}`);
+    } else {
+      setIsOpen(false);
+      // Wait just 450ms - enough to see the book start closing, 
+      // but much snappier than the full 1000ms delay.
+      setTimeout(() => {
+        router.push(`/recipe/${slug}`);
+      }, 450);
+    }
   }, [router]);
 
   // Keyboard navigation
