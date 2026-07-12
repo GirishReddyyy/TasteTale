@@ -254,6 +254,7 @@ export default function RecipeBook({ recipe, nextSlug, prevSlug }: { recipe: any
       <div className="md:hidden flex flex-wrap items-center justify-center gap-4 mt-4 w-full">
         <ImageDownloader imageUrl={recipe.backgroundImageUrl} filename={recipe.title?.replace(/\s+/g, '-').toLowerCase() || "recipe"} />
       </div>
+      </div>
     </div>
   );
 }
