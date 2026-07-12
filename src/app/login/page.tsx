@@ -4,7 +4,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { LayoutDashboard } from "lucide-react";
+import { Home } from "lucide-react";
 
 import { CornerFlourish } from "@/components/Flourish";
 
@@ -36,10 +36,10 @@ export default function LoginPage() {
     <div className="min-h-screen bg-[var(--color-bg-paper)] flex items-center justify-center p-4 relative">
       <div className="absolute top-8 right-8 z-50">
         <Link
-          href="/edit"
+          href="/"
           className="flex items-center gap-2 px-4 py-2 rounded-full font-bold text-[var(--color-primary)] bg-white border-2 border-dashed border-[var(--color-secondary)] hover:bg-[var(--color-secondary)]/10 transition-colors shadow-sm"
         >
-          <LayoutDashboard className="w-4 h-4" /> Go to Dashboard
+          <Home className="w-4 h-4" /> Go to Home
         </Link>
       </div>
       <div className="relative bg-white p-10 rounded-2xl shadow-xl w-full max-w-md border-2 border-dashed border-[var(--color-secondary)]">
