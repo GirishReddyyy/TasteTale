@@ -19,7 +19,7 @@ export default async function EditRecipePage({
 
   const resolvedParams = await params;
   await dbConnect();
-  const recipe = await Recipe.findOne({ slug: resolvedParams.slug }).lean();
+  const recipe = await Recipe.findOne({ slug: resolvedParams.slug, isDeleted: { $ne: true } }).lean();
 
   if (!recipe) {
     notFound();

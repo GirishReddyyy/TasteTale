@@ -15,7 +15,7 @@ export default async function RecipePage({
   const resolvedParams = await params;
   await dbConnect();
 
-  const recipe = await Recipe.findOne({ slug: resolvedParams.slug }).lean();
+  const recipe = await Recipe.findOne({ slug: resolvedParams.slug, isDeleted: { $ne: true } }).lean();
 
   if (!recipe) {
     notFound();
@@ -23,13 +23,13 @@ export default async function RecipePage({
 
   // Find next and previous recipes (ordered by createdAt descending)
   // "Next" means older recipe (smaller createdAt)
-  const nextRecipe = await Recipe.findOne({ createdAt: { $lt: recipe.createdAt } })
+  const nextRecipe = await Recipe.findOne({ createdAt: { $lt: recipe.createdAt }, isDeleted: { $ne: true } })
     .sort({ createdAt: -1 })
     .select("slug")
     .lean();
 
   // "Previous" means newer recipe (larger createdAt)
-  const prevRecipe = await Recipe.findOne({ createdAt: { $gt: recipe.createdAt } })
+  const prevRecipe = await Recipe.findOne({ createdAt: { $gt: recipe.createdAt }, isDeleted: { $ne: true } })
     .sort({ createdAt: 1 })
     .select("slug")
     .lean();

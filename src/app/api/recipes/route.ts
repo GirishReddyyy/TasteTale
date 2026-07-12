@@ -10,7 +10,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const limit = parseInt(searchParams.get("limit") || "50");
 
-    const recipes = await Recipe.find({})
+    const recipes = await Recipe.find({ isDeleted: { $ne: true } })
       .sort({ createdAt: -1 })
       .limit(limit)
       .lean();

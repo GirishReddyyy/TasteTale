@@ -8,7 +8,7 @@ export default async function Home() {
   await dbConnect();
 
   // Fetch recipes from DB, lean() for plain JS objects
-  const recipes = await Recipe.find({})
+  const recipes = await Recipe.find({ isDeleted: { $ne: true } })
     .sort({ createdAt: -1 })
     .lean()
     .exec();

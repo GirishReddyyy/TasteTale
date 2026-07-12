@@ -22,6 +22,7 @@ export interface IRecipe extends Document {
   authorId: Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
+  isDeleted?: boolean;
 }
 
 const RecipeSchema: Schema = new Schema(
@@ -45,6 +46,7 @@ const RecipeSchema: Schema = new Schema(
       accentColor: { type: String, default: "#fbcfe8" },
     },
     authorId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    isDeleted: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

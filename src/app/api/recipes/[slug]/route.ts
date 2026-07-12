@@ -12,7 +12,7 @@ export async function GET(
     const resolvedParams = await params;
     await dbConnect();
 
-    const recipe = await Recipe.findOne({ slug: resolvedParams.slug }).lean();
+    const recipe = await Recipe.findOne({ slug: resolvedParams.slug, isDeleted: { $ne: true } }).lean();
 
     if (!recipe) {
       return NextResponse.json({ error: "Recipe not found" }, { status: 404 });
@@ -41,7 +41,7 @@ export async function PUT(
     const { _id, authorId, createdAt, updatedAt, ...updateData } = data;
 
     const recipe = await Recipe.findOneAndUpdate(
-      { slug: resolvedParams.slug },
+      { slug: resolvedParams.slug, isDeleted: { $ne: true } },
       updateData,
       { new: true, runValidators: true }
     );
@@ -75,7 +75,11 @@ export async function DELETE(
     const resolvedParams = await params;
     await dbConnect();
 
-    const recipe = await Recipe.findOneAndDelete({ slug: resolvedParams.slug });
+    const recipe = await Recipe.findOneAndUpdate(
+      { slug: resolvedParams.slug },
+      { isDeleted: true },
+      { new: true }
+    );
 
     if (!recipe) {
       return NextResponse.json({ error: "Recipe not found" }, { status: 404 });
