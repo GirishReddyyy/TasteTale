@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import dbConnect from "@/lib/mongodb";
 import Recipe from "@/models/Recipe";
 import RecipeEditor from "@/components/RecipeEditor";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 
 export const dynamic = 'force-dynamic';
 
@@ -28,7 +28,7 @@ export default async function EditRecipePage({
   const serializedRecipe = {
     ...recipe,
     _id: recipe._id.toString(),
-    authorId: recipe.authorId.toString(),
+    authorId: recipe.authorId?.toString() ?? "",
     createdAt: recipe.createdAt.toISOString(),
     updatedAt: recipe.updatedAt.toISOString(),
   };

@@ -37,7 +37,7 @@ export default async function RecipePage({
   const serializedRecipe = {
     ...recipe,
     _id: recipe._id.toString(),
-    authorId: recipe.authorId.toString(),
+    authorId: recipe.authorId?.toString() ?? "",
     createdAt: recipe.createdAt.toISOString(),
     updatedAt: recipe.updatedAt.toISOString(),
   };

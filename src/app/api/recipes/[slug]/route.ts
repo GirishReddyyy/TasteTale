@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import dbConnect from "@/lib/mongodb";
 import Recipe from "@/models/Recipe";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 
 export async function GET(
   request: Request,
@@ -38,9 +38,11 @@ export async function PUT(
     await dbConnect();
     const data = await request.json();
 
+    const { _id, authorId, createdAt, updatedAt, ...updateData } = data;
+
     const recipe = await Recipe.findOneAndUpdate(
       { slug: resolvedParams.slug },
-      data,
+      updateData,
       { new: true, runValidators: true }
     );
 

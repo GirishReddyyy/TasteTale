@@ -17,7 +17,7 @@ export default async function Home() {
   const serializedRecipes = recipes.map((recipe: any) => ({
     ...recipe,
     _id: recipe._id.toString(),
-    authorId: recipe.authorId.toString(),
+    authorId: recipe.authorId?.toString() ?? "",
     createdAt: recipe.createdAt.toISOString(),
     updatedAt: recipe.updatedAt.toISOString(),
   }));
