@@ -18,18 +18,7 @@ export default function RecipeBook({ recipe, nextSlug, prevSlug }: { recipe: any
 
   const handleNavigate = useCallback((slug?: string) => {
     if (!slug) return;
-    
-    // On mobile, just navigate immediately. On desktop, close book then navigate.
-    const isMobile = window.innerWidth < 768;
-    
-    if (isMobile) {
-      router.push(`/recipe/${slug}`);
-    } else {
-      setIsOpen(false);
-      setTimeout(() => {
-        router.push(`/recipe/${slug}`);
-      }, 1000); // Wait for close animation
-    }
+    router.push(`/recipe/${slug}`);
   }, [router]);
 
   // Keyboard navigation
