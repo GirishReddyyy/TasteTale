@@ -44,6 +44,32 @@ export default function TiptapEditor({ content, onChange, placeholder }: TiptapE
     return null;
   }
 
+  const convertHardBreaksAndToggleList = (listType: 'bulletList' | 'orderedList') => {
+    editor.chain()
+      .focus()
+      .command(({ tr, state, dispatch }) => {
+        const { selection } = state;
+        const positions: number[] = [];
+        
+        if (!selection.empty) {
+          state.doc.nodesBetween(selection.from, selection.to, (node, pos) => {
+            if (node.type.name === 'hardBreak') {
+              positions.push(pos);
+            }
+          });
+        }
+
+        if (positions.length > 0 && dispatch) {
+          for (let i = positions.length - 1; i >= 0; i--) {
+            tr.delete(positions[i], positions[i] + 1).split(positions[i]);
+          }
+        }
+        return true;
+      })
+      [listType === 'bulletList' ? 'toggleBulletList' : 'toggleOrderedList']()
+      .run();
+  };
+
   return (
     <div className="border-2 border-dashed border-[var(--color-secondary)] rounded-xl overflow-hidden bg-white shadow-sm focus-within:border-[var(--color-primary)] transition-colors">
       <div className="flex flex-wrap items-center gap-1 p-3 bg-[var(--color-bg-paper)]">
@@ -95,14 +121,14 @@ export default function TiptapEditor({ content, onChange, placeholder }: TiptapE
 
         {/* Lists */}
         <button
-          onClick={(e) => { e.preventDefault(); editor.chain().focus().toggleBulletList().run(); }}
+          onClick={(e) => { e.preventDefault(); convertHardBreaksAndToggleList('bulletList'); }}
           className={`p-2 rounded-lg transition-colors ${editor.isActive("bulletList") ? "bg-[var(--color-primary)] text-white" : "text-[var(--color-text-body)] hover:bg-[var(--color-secondary)]/30"}`}
           title="Bullet List"
         >
           <List className="w-4 h-4" />
         </button>
         <button
-          onClick={(e) => { e.preventDefault(); editor.chain().focus().toggleOrderedList().run(); }}
+          onClick={(e) => { e.preventDefault(); convertHardBreaksAndToggleList('orderedList'); }}
           className={`p-2 rounded-lg transition-colors ${editor.isActive("orderedList") ? "bg-[var(--color-primary)] text-white" : "text-[var(--color-text-body)] hover:bg-[var(--color-secondary)]/30"}`}
           title="Numbered List"
         >

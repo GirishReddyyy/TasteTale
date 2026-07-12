@@ -40,9 +40,17 @@ export default function RecipeGrid({
         />
       </div>
 
-      {filteredRecipes.length === 0 ? (
-        <div className="text-center py-20 text-slate-500 text-lg">
-          No recipes found matching your search.
+      {initialRecipes.length === 0 ? (
+        <div className="text-center py-20 max-w-lg mx-auto">
+          <div className="relative inline-block p-10 bg-white rounded-2xl border-2 border-dashed border-[var(--color-secondary)] shadow-sm mb-6">
+            <span className="text-6xl">📖</span>
+          </div>
+          <h2 className="text-3xl font-heading text-[var(--color-primary)] mb-4">The library is empty!</h2>
+          <p className="text-[var(--color-text-body)] text-lg mb-8">No recipes have been published yet. Check back later!</p>
+        </div>
+      ) : filteredRecipes.length === 0 ? (
+        <div className="text-center py-20 text-[var(--color-text-body)] text-lg">
+          No recipes match your search.
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">

@@ -1,6 +1,8 @@
 # TasteTale
 A storybook-style recipe archive featuring a CSS-powered 3D "book-opening" effect.
 
+**Live Demo**: [https://taste-tale.vercel.app/](https://taste-tale.vercel.app/)
+
 ## 🚀 Project Workflow & Features
 
 1. **The public homepage**: Features a responsive recipe grid and a client-side search bar to filter recipes by title or tag.
@@ -56,7 +58,7 @@ src/
 │   ├── auth.ts                          # NextAuth configuration and credentials logic
 │   └── mongodb.ts                       # Cached MongoDB connection utility
 └── models/
-    ├── Comment.ts                       # Mongoose schema for Comments
+    ├── Comment.ts                       # Mongoose schema reserved for potential future use (not actively wired up)
     ├── Recipe.ts                        # Mongoose schema for Recipes
     └── User.ts                          # Mongoose schema for Users
 ```
@@ -79,7 +81,10 @@ The following environment variables are required to run the app locally and must
 4. Run the development server with `npm run dev`.
 5. Navigate to `http://localhost:3000/login` to authenticate as an admin and begin creating recipes.
 
----
+## ⚠️ Known Limitations
 
-**Note on Unused Files:**
-The `src/models/Comment.ts` file contains a Mongoose schema that is defined but not yet wired up or imported anywhere in the application. Future contributors should be aware that this is currently dead code.
+*   No visitor commenting or discussion features implemented.
+*   No recipe categories or pagination for the archive.
+*   No image optimization or automatic resizing upon upload.
+*   No rate limiting on the admin login route.
+*   No automated tests (unit or integration) exist in the codebase.
