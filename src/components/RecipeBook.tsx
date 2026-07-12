@@ -164,27 +164,7 @@ export default function RecipeBook({ recipe, nextSlug, prevSlug }: { recipe: any
           </div>
         </div>
 
-        {/* Desktop Navigation Buttons */}
-        {prevSlug && (
-          <button
-            onClick={(e) => { e.stopPropagation(); handleNavigate(prevSlug); }}
-            onMouseEnter={() => router.prefetch(`/recipe/${prevSlug}`)}
-            className={`fixed left-4 md:left-8 top-1/2 -translate-y-1/2 z-50 p-4 bg-[var(--color-primary)] text-white rounded-full border-2 border-dashed border-white/50 shadow-lg hover:scale-110 hover:bg-white hover:text-[var(--color-primary)] hover:border-[var(--color-primary)] transition-all ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
-            aria-label="Previous Recipe"
-          >
-            <ArrowLeft className="w-6 h-6" />
-          </button>
-        )}
-        {nextSlug && (
-          <button
-            onClick={(e) => { e.stopPropagation(); handleNavigate(nextSlug); }}
-            onMouseEnter={() => router.prefetch(`/recipe/${nextSlug}`)}
-            className={`fixed right-4 md:right-8 top-1/2 -translate-y-1/2 z-50 p-4 bg-[var(--color-primary)] text-white rounded-full border-2 border-dashed border-white/50 shadow-lg hover:scale-110 hover:bg-white hover:text-[var(--color-primary)] hover:border-[var(--color-primary)] transition-all ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
-            aria-label="Next Recipe"
-          >
-            <ArrowRight className="w-6 h-6" />
-          </button>
-        )}
+
 
         {/* Open State Content (Two Columns) */}
         <div className={`absolute inset-0 flex transition-opacity duration-700 delay-100 ${isOpen ? "opacity-100 z-30" : "opacity-0 pointer-events-none"}`}>
@@ -233,6 +213,30 @@ export default function RecipeBook({ recipe, nextSlug, prevSlug }: { recipe: any
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Desktop Navigation Buttons (Moved outside overflow-hidden) */}
+      <div className="hidden md:block">
+        {prevSlug && (
+          <button
+            onClick={(e) => { e.stopPropagation(); handleNavigate(prevSlug); }}
+            onMouseEnter={() => router.prefetch(`/recipe/${prevSlug}`)}
+            className={`fixed left-4 md:left-8 lg:left-12 top-1/2 -translate-y-1/2 z-[100] p-4 bg-[var(--color-primary)] text-white rounded-full border-2 border-dashed border-white/50 shadow-lg hover:scale-110 hover:bg-white hover:text-[var(--color-primary)] hover:border-[var(--color-primary)] transition-all ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+            aria-label="Previous Recipe"
+          >
+            <ArrowLeft className="w-6 h-6" />
+          </button>
+        )}
+        {nextSlug && (
+          <button
+            onClick={(e) => { e.stopPropagation(); handleNavigate(nextSlug); }}
+            onMouseEnter={() => router.prefetch(`/recipe/${nextSlug}`)}
+            className={`fixed right-4 md:right-8 lg:right-12 top-1/2 -translate-y-1/2 z-[100] p-4 bg-[var(--color-primary)] text-white rounded-full border-2 border-dashed border-white/50 shadow-lg hover:scale-110 hover:bg-white hover:text-[var(--color-primary)] hover:border-[var(--color-primary)] transition-all ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+            aria-label="Next Recipe"
+          >
+            <ArrowRight className="w-6 h-6" />
+          </button>
+        )}
       </div>
 
       {/* Controls below the book */}
