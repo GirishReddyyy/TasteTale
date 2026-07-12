@@ -58,7 +58,7 @@ export default function RecipeBook({ recipe, nextSlug, prevSlug }: { recipe: any
   };
 
   return (
-    <div className="flex flex-col items-center gap-6 w-full max-w-6xl mx-auto h-[85vh]">
+    <div className="flex flex-col items-center gap-6 w-full max-w-7xl mx-auto h-[85vh] relative px-0 md:px-24">
       <div className="w-full h-full relative perspective-[2500px]">
       {/* Mobile view (no 3D flip, just simple fade/slide) */}
       <div
@@ -215,13 +215,13 @@ export default function RecipeBook({ recipe, nextSlug, prevSlug }: { recipe: any
         </div>
       </div>
 
-      {/* Desktop Navigation Buttons (Moved outside overflow-hidden) */}
+      {/* Desktop Navigation Buttons (Moved to padding area) */}
       <div className="hidden md:block">
         {prevSlug && (
           <button
             onClick={(e) => { e.stopPropagation(); handleNavigate(prevSlug); }}
             onMouseEnter={() => router.prefetch(`/recipe/${prevSlug}`)}
-            className={`fixed left-4 md:left-8 lg:left-12 top-1/2 -translate-y-1/2 z-[100] p-4 bg-[var(--color-primary)] text-white rounded-full border-2 border-dashed border-white/50 shadow-lg hover:scale-110 hover:bg-white hover:text-[var(--color-primary)] hover:border-[var(--color-primary)] transition-all ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+            className={`absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-[100] p-4 bg-[var(--color-primary)] text-white rounded-full border-2 border-dashed border-white/50 shadow-lg hover:scale-110 hover:bg-white hover:text-[var(--color-primary)] hover:border-[var(--color-primary)] transition-all ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
             aria-label="Previous Recipe"
           >
             <ArrowLeft className="w-6 h-6" />
@@ -231,7 +231,7 @@ export default function RecipeBook({ recipe, nextSlug, prevSlug }: { recipe: any
           <button
             onClick={(e) => { e.stopPropagation(); handleNavigate(nextSlug); }}
             onMouseEnter={() => router.prefetch(`/recipe/${nextSlug}`)}
-            className={`fixed right-4 md:right-8 lg:right-12 top-1/2 -translate-y-1/2 z-[100] p-4 bg-[var(--color-primary)] text-white rounded-full border-2 border-dashed border-white/50 shadow-lg hover:scale-110 hover:bg-white hover:text-[var(--color-primary)] hover:border-[var(--color-primary)] transition-all ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+            className={`absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-[100] p-4 bg-[var(--color-primary)] text-white rounded-full border-2 border-dashed border-white/50 shadow-lg hover:scale-110 hover:bg-white hover:text-[var(--color-primary)] hover:border-[var(--color-primary)] transition-all ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
             aria-label="Next Recipe"
           >
             <ArrowRight className="w-6 h-6" />
@@ -253,7 +253,6 @@ export default function RecipeBook({ recipe, nextSlug, prevSlug }: { recipe: any
       {/* Mobile Controls */}
       <div className="md:hidden flex flex-wrap items-center justify-center gap-4 mt-4 w-full">
         <ImageDownloader imageUrl={recipe.backgroundImageUrl} filename={recipe.title?.replace(/\s+/g, '-').toLowerCase() || "recipe"} />
-      </div>
       </div>
     </div>
   );
