@@ -3,7 +3,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { IRecipe } from "@/models/Recipe";
-import { Clock, ArrowLeft, ArrowRight, ArrowUp, ArrowDown } from "lucide-react";
+import { Clock, ArrowLeft, ArrowRight, ArrowUp, ArrowDown, X } from "lucide-react";
+import ImageDownloader from "./ImageDownloader";
 
 export default function RecipeBook({ recipe, nextSlug, prevSlug }: { recipe: any; nextSlug?: string; prevSlug?: string }) {
   const router = useRouter();
@@ -48,12 +49,6 @@ export default function RecipeBook({ recipe, nextSlug, prevSlug }: { recipe: any
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [nextSlug, prevSlug, handleNavigate]);
 
-  useEffect(() => {
-    // Open the book shortly after mounting for the effect
-    const timer = setTimeout(() => setIsOpen(true), 500);
-    return () => clearTimeout(timer);
-  }, []);
-
   const theme = recipe.theme || {
     titleFont: "Caveat",
     titleColor: "#333333",
@@ -63,7 +58,8 @@ export default function RecipeBook({ recipe, nextSlug, prevSlug }: { recipe: any
   };
 
   return (
-    <div className="w-full max-w-6xl mx-auto h-[85vh] relative perspective-[2500px]">
+    <div className="flex flex-col items-center gap-6 w-full max-w-6xl mx-auto h-[85vh]">
+      <div className="w-full h-full relative perspective-[2500px]">
       {/* Mobile view (no 3D flip, just simple fade/slide) */}
       <div
         className="md:hidden w-full h-full rounded-xl overflow-hidden shadow-2xl relative bg-cover bg-center overflow-y-auto"
@@ -265,6 +261,22 @@ export default function RecipeBook({ recipe, nextSlug, prevSlug }: { recipe: any
              <div className="w-full h-full bg-transparent" />
           </div>
         </div>
+      </div>
+
+      {/* Controls below the book */}
+      <div className={`hidden md:flex flex-wrap items-center justify-center gap-4 transition-all duration-700 ${isOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}`}>
+        <button
+          onClick={() => setIsOpen(false)}
+          className="flex items-center gap-2 px-6 py-3 bg-white text-slate-700 rounded-2xl font-bold hover:bg-slate-50 transition-colors shadow-sm border border-slate-200"
+        >
+          <X className="w-5 h-5" /> Close Recipe Book
+        </button>
+        <ImageDownloader imageUrl={recipe.backgroundImageUrl} filename={recipe.title?.replace(/\s+/g, '-').toLowerCase() || "recipe"} />
+      </div>
+      
+      {/* Mobile Controls */}
+      <div className="md:hidden flex flex-wrap items-center justify-center gap-4 mt-4 w-full">
+        <ImageDownloader imageUrl={recipe.backgroundImageUrl} filename={recipe.title?.replace(/\s+/g, '-').toLowerCase() || "recipe"} />
       </div>
     </div>
   );
