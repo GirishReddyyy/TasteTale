@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { CornerFlourish } from "@/components/Flourish";
-import { Edit, Trash2, Plus, LogOut, Search, Eye, Home } from "lucide-react";
+import { Edit, Trash2, Plus, LogOut, Search, Eye, EyeOff, Home } from "lucide-react";
 
 type Recipe = {
   _id: string;
@@ -12,6 +12,7 @@ type Recipe = {
   title: string;
   backgroundImageUrl: string;
   tags: string[];
+  isVisible?: boolean;
 };
 
 export default function AdminDashboard() {
@@ -55,6 +56,26 @@ export default function AdminDashboard() {
     } finally {
       setDeletingId(null);
       setConfirmDeleteId(null);
+    }
+  };
+
+  const toggleVisibility = async (slug: string, id: string, currentVisibility: boolean) => {
+    const newVisibility = currentVisibility === undefined ? false : !currentVisibility;
+    try {
+      const res = await fetch(`/api/recipes/${slug}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isVisible: newVisibility }),
+      });
+      if (res.ok) {
+        setRecipes((prev) =>
+          prev.map((r) => (r._id === id ? { ...r, isVisible: newVisibility } : r))
+        );
+      } else {
+        alert("Failed to update visibility");
+      }
+    } catch (error) {
+      alert("Error updating visibility");
     }
   };
 
@@ -156,10 +177,16 @@ export default function AdminDashboard() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {filteredRecipes.map((recipe) => (
-              <div key={recipe._id} className="relative group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border-2 border-dashed border-[var(--color-secondary)] flex flex-col">
+              <div key={recipe._id} className={`relative group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all border-2 border-dashed border-[var(--color-secondary)] flex flex-col ${recipe.isVisible === false ? 'opacity-60 grayscale-[0.2]' : ''}`}>
                 <CornerFlourish className="absolute top-2 left-2 w-5 h-5 opacity-90 z-10" />
                 <CornerFlourish className="absolute top-2 right-2 w-5 h-5 opacity-90 z-10" />
                 
+                {recipe.isVisible === false && (
+                  <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 bg-slate-800 text-white text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full shadow-sm">
+                    Hidden
+                  </div>
+                )}
+
                 <div 
                   className="aspect-video w-full bg-cover bg-center border-b-2 border-dashed border-[var(--color-secondary)]"
                   style={{ backgroundImage: `url(${recipe.backgroundImageUrl})` }}
@@ -181,14 +208,20 @@ export default function AdminDashboard() {
                   </div>
                   
                   <div className="mt-auto grid grid-cols-3 gap-2 pt-4 border-t-2 border-dashed border-[var(--color-secondary)]/50">
-                    <Link
-                      href={`/recipe/${recipe.slug}`}
-                      target="_blank"
-                      title="View Live"
-                      className="flex items-center justify-center gap-2 py-2 rounded-lg font-bold text-[var(--color-supporting)] hover:bg-[var(--color-supporting)]/10 transition-colors"
-                    >
-                      <Eye className="w-4 h-4" />
-                    </Link>
+                    {recipe.isVisible === false ? (
+                      <div className="flex items-center justify-center gap-2 py-2 rounded-lg font-bold text-slate-400">
+                        <EyeOff className="w-4 h-4" />
+                      </div>
+                    ) : (
+                      <Link
+                        href={`/recipe/${recipe.slug}`}
+                        target="_blank"
+                        title="View Live"
+                        className="flex items-center justify-center gap-2 py-2 rounded-lg font-bold text-[var(--color-supporting)] hover:bg-[var(--color-supporting)]/10 transition-colors"
+                      >
+                        <Eye className="w-4 h-4" />
+                      </Link>
+                    )}
                     
                     <Link
                       href={`/edit/${recipe.slug}`}
@@ -198,18 +231,29 @@ export default function AdminDashboard() {
                       <Edit className="w-4 h-4" />
                     </Link>
                     
+                    <button
+                      onClick={() => toggleVisibility(recipe.slug, recipe._id, recipe.isVisible !== false)}
+                      title={recipe.isVisible === false ? "Show Recipe" : "Hide Recipe"}
+                      className={`flex items-center justify-center gap-2 py-2 rounded-lg font-bold transition-colors ${recipe.isVisible === false ? 'text-green-600 hover:bg-green-50' : 'text-amber-500 hover:bg-amber-50'}`}
+                    >
+                      {recipe.isVisible === false ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+                    </button>
+                  </div>
+
+                  <div className="pt-3 pb-1 border-t border-slate-100 mt-3">
                     {confirmDeleteId === recipe._id ? (
                       <div className="flex items-center justify-center gap-1">
+                        <span className="text-xs text-red-500 font-bold mr-2">Delete permanently?</span>
                         <button
                           onClick={() => handleDelete(recipe.slug, recipe._id)}
                           disabled={deletingId === recipe._id}
-                          className="flex-1 py-2 bg-red-500 text-white rounded-lg font-bold text-sm hover:bg-red-600 disabled:opacity-50"
+                          className="px-3 py-1 bg-red-500 text-white rounded font-bold text-xs hover:bg-red-600 disabled:opacity-50"
                         >
                           {deletingId === recipe._id ? "..." : "Yes"}
                         </button>
                         <button
                           onClick={() => setConfirmDeleteId(null)}
-                          className="flex-1 py-2 bg-slate-200 text-slate-700 rounded-lg font-bold text-sm hover:bg-slate-300"
+                          className="px-3 py-1 bg-slate-200 text-slate-700 rounded font-bold text-xs hover:bg-slate-300"
                         >
                           No
                         </button>
@@ -217,9 +261,9 @@ export default function AdminDashboard() {
                     ) : (
                       <button
                         onClick={() => setConfirmDeleteId(recipe._id)}
-                        className="flex items-center justify-center gap-2 py-2 rounded-lg font-bold text-red-500 hover:bg-red-50 transition-colors"
+                        className="w-full flex items-center justify-center gap-1 py-1 rounded text-xs font-medium text-slate-400 hover:text-red-500 hover:bg-red-50 transition-colors"
                       >
-                        <Trash2 className="w-4 h-4" /> Delete
+                        <Trash2 className="w-3 h-3" /> Delete permanently
                       </button>
                     )}
                   </div>

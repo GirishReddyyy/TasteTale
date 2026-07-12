@@ -12,7 +12,13 @@ export async function GET(
     const resolvedParams = await params;
     await dbConnect();
 
-    const recipe = await Recipe.findOne({ slug: resolvedParams.slug, isDeleted: { $ne: true } }).lean();
+    const session = await getServerSession(authOptions);
+    const isAdmin = (session?.user as any)?.role === "admin";
+
+    const query: any = { slug: resolvedParams.slug };
+    if (!isAdmin) query.isVisible = { $ne: false };
+
+    const recipe = await Recipe.findOne(query).lean();
 
     if (!recipe) {
       return NextResponse.json({ error: "Recipe not found" }, { status: 404 });
@@ -41,7 +47,7 @@ export async function PUT(
     const { _id, authorId, createdAt, updatedAt, ...updateData } = data;
 
     const recipe = await Recipe.findOneAndUpdate(
-      { slug: resolvedParams.slug, isDeleted: { $ne: true } },
+      { slug: resolvedParams.slug },
       updateData,
       { new: true, runValidators: true }
     );
@@ -75,11 +81,7 @@ export async function DELETE(
     const resolvedParams = await params;
     await dbConnect();
 
-    const recipe = await Recipe.findOneAndUpdate(
-      { slug: resolvedParams.slug },
-      { isDeleted: true },
-      { new: true }
-    );
+    const recipe = await Recipe.findOneAndDelete({ slug: resolvedParams.slug });
 
     if (!recipe) {
       return NextResponse.json({ error: "Recipe not found" }, { status: 404 });
@@ -88,5 +90,39 @@ export async function DELETE(
     return NextResponse.json({ message: "Recipe deleted successfully" });
   } catch (error: any) {
     return NextResponse.json({ error: error.message || "Failed to delete recipe" }, { status: 500 });
+  }
+}
+
+export async function PATCH(
+  request: Request,
+  { params }: { params: Promise<{ slug: string }> }
+) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session || (session.user as any)?.role !== "admin") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const resolvedParams = await params;
+    await dbConnect();
+    const data = await request.json();
+
+    if (typeof data.isVisible !== "boolean") {
+      return NextResponse.json({ error: "isVisible must be a boolean" }, { status: 400 });
+    }
+
+    const recipe = await Recipe.findOneAndUpdate(
+      { slug: resolvedParams.slug },
+      { isVisible: data.isVisible },
+      { new: true, runValidators: true }
+    );
+
+    if (!recipe) {
+      return NextResponse.json({ error: "Recipe not found" }, { status: 404 });
+    }
+
+    return NextResponse.json(recipe);
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message || "Failed to update recipe visibility" }, { status: 500 });
   }
 }

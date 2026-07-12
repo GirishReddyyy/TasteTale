@@ -4,6 +4,8 @@ import Recipe from "@/models/Recipe";
 import RecipeBook from "@/components/RecipeBook";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
 
 export const dynamic = 'force-dynamic';
 
@@ -15,7 +17,13 @@ export default async function RecipePage({
   const resolvedParams = await params;
   await dbConnect();
 
-  const recipe = await Recipe.findOne({ slug: resolvedParams.slug, isDeleted: { $ne: true } }).lean();
+  const session = await getServerSession(authOptions);
+  const isAdmin = (session?.user as any)?.role === "admin";
+
+  const query: any = { slug: resolvedParams.slug };
+  if (!isAdmin) query.isVisible = { $ne: false };
+
+  const recipe = await Recipe.findOne(query).lean();
 
   if (!recipe) {
     notFound();
@@ -23,13 +31,17 @@ export default async function RecipePage({
 
   // Find next and previous recipes (ordered by createdAt descending)
   // "Next" means older recipe (smaller createdAt)
-  const nextRecipe = await Recipe.findOne({ createdAt: { $lt: recipe.createdAt }, isDeleted: { $ne: true } })
+  const nextQuery: any = { createdAt: { $lt: recipe.createdAt } };
+  if (!isAdmin) nextQuery.isVisible = { $ne: false };
+  const nextRecipe = await Recipe.findOne(nextQuery)
     .sort({ createdAt: -1 })
     .select("slug")
     .lean();
 
   // "Previous" means newer recipe (larger createdAt)
-  const prevRecipe = await Recipe.findOne({ createdAt: { $gt: recipe.createdAt }, isDeleted: { $ne: true } })
+  const prevQuery: any = { createdAt: { $gt: recipe.createdAt } };
+  if (!isAdmin) prevQuery.isVisible = { $ne: false };
+  const prevRecipe = await Recipe.findOne(prevQuery)
     .sort({ createdAt: 1 })
     .select("slug")
     .lean();

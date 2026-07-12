@@ -9,8 +9,13 @@ export async function GET(request: Request) {
     await dbConnect();
     const { searchParams } = new URL(request.url);
     const limit = parseInt(searchParams.get("limit") || "50");
+    const session = await getServerSession(authOptions);
+    const isAdmin = (session?.user as any)?.role === "admin";
 
-    const recipes = await Recipe.find({ isDeleted: { $ne: true } })
+    const query: any = {};
+    if (!isAdmin) query.isVisible = { $ne: false };
+
+    const recipes = await Recipe.find(query)
       .sort({ createdAt: -1 })
       .limit(limit)
       .lean();
