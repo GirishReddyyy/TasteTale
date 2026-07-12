@@ -215,38 +215,37 @@ export default function RecipeBook({ recipe, nextSlug, prevSlug }: { recipe: any
         </div>
       </div>
 
-      {/* Desktop Navigation Buttons (Moved to padding area) */}
-      <div className="hidden md:block">
+
+
+      {/* Controls below the book */}
+      <div className={`hidden md:flex flex-wrap items-center justify-center gap-4 transition-all duration-700 ${isOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}`}>
         {prevSlug && (
           <button
             onClick={(e) => { e.stopPropagation(); handleNavigate(prevSlug); }}
             onMouseEnter={() => router.prefetch(`/recipe/${prevSlug}`)}
-            className={`absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-[100] p-4 bg-[var(--color-primary)] text-white rounded-full border-2 border-dashed border-white/50 shadow-lg hover:scale-110 hover:bg-white hover:text-[var(--color-primary)] hover:border-[var(--color-primary)] transition-all ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
-            aria-label="Previous Recipe"
+            className="flex items-center gap-2 px-6 py-3 bg-[var(--color-primary)] text-white rounded-2xl font-bold hover:bg-[var(--color-primary)]/90 transition-colors shadow-sm"
           >
-            <ArrowLeft className="w-6 h-6" />
+            <ArrowLeft className="w-5 h-5" /> Previous
           </button>
         )}
+        
+        <button
+          onClick={() => setIsOpen(false)}
+          className="flex items-center gap-2 px-6 py-3 bg-white text-slate-700 rounded-2xl font-bold hover:bg-slate-50 transition-colors shadow-sm border border-slate-200 mx-4"
+        >
+          <X className="w-5 h-5" /> Close Recipe Book
+        </button>
+
         {nextSlug && (
           <button
             onClick={(e) => { e.stopPropagation(); handleNavigate(nextSlug); }}
             onMouseEnter={() => router.prefetch(`/recipe/${nextSlug}`)}
-            className={`absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-[100] p-4 bg-[var(--color-primary)] text-white rounded-full border-2 border-dashed border-white/50 shadow-lg hover:scale-110 hover:bg-white hover:text-[var(--color-primary)] hover:border-[var(--color-primary)] transition-all ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
-            aria-label="Next Recipe"
+            className="flex items-center gap-2 px-6 py-3 bg-[var(--color-primary)] text-white rounded-2xl font-bold hover:bg-[var(--color-primary)]/90 transition-colors shadow-sm"
           >
-            <ArrowRight className="w-6 h-6" />
+            Next <ArrowRight className="w-5 h-5" />
           </button>
         )}
-      </div>
 
-      {/* Controls below the book */}
-      <div className={`hidden md:flex flex-wrap items-center justify-center gap-4 transition-all duration-700 ${isOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}`}>
-        <button
-          onClick={() => setIsOpen(false)}
-          className="flex items-center gap-2 px-6 py-3 bg-white text-slate-700 rounded-2xl font-bold hover:bg-slate-50 transition-colors shadow-sm border border-slate-200"
-        >
-          <X className="w-5 h-5" /> Close Recipe Book
-        </button>
         <ImageDownloader imageUrl={recipe.backgroundImageUrl} filename={recipe.title?.replace(/\s+/g, '-').toLowerCase() || "recipe"} />
       </div>
       
