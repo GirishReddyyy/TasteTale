@@ -5,7 +5,7 @@ import StarterKit from "@tiptap/starter-kit";
 import { TextStyleKit } from "@tiptap/extension-text-style";
 import TextAlign from "@tiptap/extension-text-align";
 import Placeholder from "@tiptap/extension-placeholder";
-import { Bold, Italic, AlignLeft, AlignCenter, AlignRight, AlignJustify } from "lucide-react";
+import { Bold, Italic, AlignLeft, AlignCenter, AlignRight, AlignJustify, List, ListOrdered } from "lucide-react";
 
 type TiptapEditorProps = {
   content: string;
@@ -89,6 +89,24 @@ export default function TiptapEditor({ content, onChange, placeholder }: TiptapE
           className={`p-2 rounded-lg transition-colors ${editor.isActive({ textAlign: "justify" }) ? "bg-[var(--color-primary)] text-white" : "text-[var(--color-text-body)] hover:bg-[var(--color-secondary)]/30"}`}
         >
           <AlignJustify className="w-4 h-4" />
+        </button>
+
+        <div className="w-px h-6 bg-[var(--color-secondary)] mx-1" />
+
+        {/* Lists */}
+        <button
+          onClick={(e) => { e.preventDefault(); editor.chain().focus().toggleBulletList().run(); }}
+          className={`p-2 rounded-lg transition-colors ${editor.isActive("bulletList") ? "bg-[var(--color-primary)] text-white" : "text-[var(--color-text-body)] hover:bg-[var(--color-secondary)]/30"}`}
+          title="Bullet List"
+        >
+          <List className="w-4 h-4" />
+        </button>
+        <button
+          onClick={(e) => { e.preventDefault(); editor.chain().focus().toggleOrderedList().run(); }}
+          className={`p-2 rounded-lg transition-colors ${editor.isActive("orderedList") ? "bg-[var(--color-primary)] text-white" : "text-[var(--color-text-body)] hover:bg-[var(--color-secondary)]/30"}`}
+          title="Numbered List"
+        >
+          <ListOrdered className="w-4 h-4" />
         </button>
 
         <div className="w-px h-6 bg-[var(--color-secondary)] mx-1" />
